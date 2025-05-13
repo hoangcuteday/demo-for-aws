@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>MNIST Digit Classifier</title>
+		<style>
+			body {
+			    font-family: Arial, sans-serif;
+			    background-color: #f4f4f9;
+			    text-align: center;
+			    margin: 0;
+			    padding: 0;
+			}
+			h1 {
+			    color: #4CAF50;
+			}
+			form {
+			    margin: 20px;
+			    padding: 20px;
+			    background-color: #fff;
+			    border-radius: 10px;
+			    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			    display: inline-block;
+			    text-align: left;
+			}
+			input[type="file"] {
+			    padding: 10px;
+			    margin-bottom: 20px;
+			    font-size: 16px;
+			}
+			input[type="submit"] {
+			    padding: 10px 20px;
+			    font-size: 16px;
+			    background-color: #4CAF50;
+			    color: white;
+			    border: none;
+			    border-radius: 5px;
+			    cursor: pointer;
+			}
+			input[type="submit"]:hover {
+			    background-color: #45a049;
+			}
+			#uploaded-image {
+			    margin-top: 20px;
+			    max-width: 200px;
+			    max-height: 200px;
+			    border: 1px solid #ddd;
+			    border-radius: 5px;
+			    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			}
+			.result {
+			    margin-top: 30px;
+			    font-size: 24px;
+			    color: #333;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Dự đoán chữ số viết tay (MNIST)</h1>
+
+		<form method="POST" enctype="multipart/form-data">
+			<input type="file" name="file" accept="image/*" required onchange="previewImage(event)" />
+			<input type="submit" value="Dự đoán" />
+		</form>
+
+		{% if prediction is not none %}
+		<div class="result">
+			<h2>Kết quả dự đoán: {{ prediction }}</h2>
+		</div>
+		{% endif %} {% if request.method == 'POST' %}
+		<div>
+			<h3>Ảnh đã tải lên:</h3>
+			<img
+				id="uploaded-image"
+				src="{{ url_for('static', filename='uploaded_image.png') }}"
+				alt="Uploaded Image" />
+		</div>
+		{% endif %}
+
+		<script>
+			function previewImage(event) {
+			    const reader = new FileReader();
+			    reader.onload = function () {
+			        const output = document.getElementById('uploaded-image');
+			        output.src = reader.result;
+			    }
+			    reader.readAsDataURL(event.target.files[0]);
+			}
+		</script>
+	</body>
+</html>
